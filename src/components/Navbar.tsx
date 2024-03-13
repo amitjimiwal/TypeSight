@@ -1,6 +1,5 @@
 import FlagIcon from "../icons/Flagicon";
 import React from "react";
-import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./ui/toggle-theme";
 import {
@@ -12,9 +11,9 @@ import {
 import { Menu } from "lucide-react";
 
 const routes = [
-  { name: "Services", path: "#", id: 1 },
-  { name: "About", path: "#", id: 2 },
-  { name: "Contact", path: "#", id: 3 },
+  { name: "Services", path: "#about", id: 1 },
+  { name: "About", path: "#about", id: 2 },
+  { name: "Contact", path: "#contact", id: 3 },
 ];
 const Navbar = () => {
   return (
@@ -24,18 +23,20 @@ const Navbar = () => {
         <span className="font-bold text-xl">TYPESIGHT</span>
       </div>
       <div className="flex items-center space-x-6">
+        {/* Desktop Navbar */}
         <div className="hidden sm:flex gap-4">
           {routes.map((route) => (
-            <Link
+            <a
               key={route.id}
-              className="text-gray-600 hover:text-gray-900"
-              to={route.path}
+              className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
+              href={route.path}
             >
               {route.name}
-            </Link>
+            </a>
           ))}
         </div>
         <ModeToggle />
+        {/* Mobile Navbar */}
         <div className="sm:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -46,13 +47,13 @@ const Navbar = () => {
             <DropdownMenuContent align="center">
               {routes.map((route) => (
                 <DropdownMenuItem key={route.id}>
-                  <Link
+                  <a
                     key={route.id}
-                    className="text-gray-600 hover:text-gray-900"
-                    to={route.path}
+                    className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
+                    href={route.path}
                   >
                     {route.name}
-                  </Link>
+                  </a>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>

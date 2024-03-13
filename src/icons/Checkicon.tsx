@@ -1,6 +1,8 @@
 import { SVGProps } from "react";
 
-export default function FlagIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+export default function CheckCircleIcon(
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+) {
   return (
     <svg
       {...props}
@@ -14,8 +16,8 @@ export default function FlagIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSV
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
-      <line x1="4" x2="4" y1="22" y2="15" />
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
     </svg>
   );
 }
