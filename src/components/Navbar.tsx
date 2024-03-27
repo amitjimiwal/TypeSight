@@ -1,4 +1,3 @@
-import FlagIcon from "../icons/Flagicon";
 import React from "react";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./ui/toggle-theme";
@@ -15,11 +14,11 @@ const routes = [
   { name: "About", path: "#about", id: 2 },
   { name: "Contact", path: "#contact", id: 3 },
 ];
-const Navbar = () => {
+const Navbar:React.FC = () => {
   return (
     <nav className="flex justify-between items-center py-4 px-8 border-b">
       <div className="flex items-center space-x-4">
-        <FlagIcon className="text-blue-600 h-6 w-6" />
+        <img src="/logo.png" alt="Typesight Logo" className="h-10 w-10" />
         <span className="font-bold text-xl">TYPESIGHT</span>
       </div>
       <div className="flex items-center space-x-6">
