@@ -1,11 +1,20 @@
-import React from 'react'
+import React from "react";
+import { useNavigate } from "react-router";
 
 const TypingTest = () => {
+  const navigate = useNavigate();
   return (
     <div>
-      TypingTest Page
+      TypingTest Page{" "}
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Go Home
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default TypingTest
+export default TypingTest;

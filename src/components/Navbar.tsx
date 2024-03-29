@@ -8,13 +8,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Menu } from "lucide-react";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { useNavigate } from "react-router-dom";
 
 const routes = [
   { name: "Services", path: "#about", id: 1 },
   { name: "About", path: "#about", id: 2 },
   { name: "Contact", path: "#contact", id: 3 },
 ];
-const Navbar:React.FC = () => {
+const Navbar: React.FC = () => {
+  const { status, user } = useAuthStatus();
+  const navigate = useNavigate();
   return (
     <nav className="flex justify-between items-center py-4 px-8 border-b">
       <div className="flex items-center space-x-4">
@@ -58,7 +62,14 @@ const Navbar:React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Button className="bg-blue-600 text-white">Sign Up</Button>
+        <Button
+          className="bg-blue-600 text-white"
+          onClick={() => {
+            status ? navigate(`/dashboard/${user?.id}`) : navigate("/signup");
+          }}
+        >
+          {status ? "DashBoard" : "Join"}
+        </Button>
       </div>
     </nav>
   );

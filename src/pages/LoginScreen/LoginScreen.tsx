@@ -6,17 +6,21 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { LoginData } from "@/types";
+import { loginUser } from "@/redux-store/slices/authSlice";
+import useAppDispatch from "@/hooks/useAppDispatch";
 
 const LoginScreen: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [showPassword, setshowPassword] = useState<boolean>(false);
   const {
     register,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = useForm<LoginData>();
-  const submitHandler= async function (data:LoginData){
-    console.log(data);
-  }
+  const submitHandler = function (data: LoginData) {
+    console.table([data, typeof data.email, typeof data.password]);
+    dispatch(loginUser(data)).then(() => {});
+  };
   return (
     <div className="flex flex-col min-h-screen items-stretch">
       <header className="p-4 flex items-center">

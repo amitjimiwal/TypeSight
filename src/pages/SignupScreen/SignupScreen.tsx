@@ -6,16 +6,19 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { SingupData } from "@/types";
+import useAppDispatch from "@/hooks/useAppDispatch";
+import { signupuser } from "@/redux-store/slices/authSlice";
 
 const SignupScreen: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [showPassword, setshowPassword] = useState<boolean>(false);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<SingupData>();
-  const submitHandler = async function (data: SingupData) {
-    console.log(data);
+  const submitHandler = function (data: SingupData) {
+    dispatch(signupuser(data));
   };
   return (
     <div className="flex flex-col min-h-screen items-stretch">

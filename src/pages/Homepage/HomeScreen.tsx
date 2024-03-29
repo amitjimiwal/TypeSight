@@ -5,7 +5,10 @@ import about from "../../assets/images/about.png";
 import CheckCircleIcon from "@/icons/Checkicon";
 import ContactUS from "@/components/ContactUS";
 import Pricing from "@/components/Pricing";
+import { ArrowRightIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 const HomeScreen = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* Banner */}
@@ -19,7 +22,12 @@ const HomeScreen = () => {
             accuracy tests. Whether you’re a professional typist or just looking
             to improve your skills, we’ve got you covered.
           </p>
-          <Button className="bg-blue-600 text-white">View All Services</Button>
+          <Button
+            className="bg-blue-600 text-white"
+            onClick={() => navigate("/login")}
+          >
+            Explore now <ArrowRightIcon />
+          </Button>
         </div>
         <img
           alt="Typing illustration"
