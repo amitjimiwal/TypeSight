@@ -18,7 +18,7 @@ const LoginScreen: React.FC = () => {
     handleSubmit,
   } = useForm<LoginData>();
   const submitHandler = function (data: LoginData) {
-    console.table([data, typeof data.email, typeof data.password]);
+    if (import.meta.env.VITE_APP_ENV === "development") console.log(data);
     dispatch(loginUser(data)).then(() => {});
   };
   return (

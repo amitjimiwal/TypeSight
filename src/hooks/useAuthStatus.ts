@@ -5,4 +5,8 @@ const useAuthStatus = () => {
      const { status, user } = useSelector((state: AuthState) => state.auth);
      return { status, user };
 }
-export { useAuthStatus };
+const useResultStatus=()=>{
+     const {results}=useSelector((state:AuthState)=>state.result);
+     return  {results};
+}
+export { useAuthStatus,useResultStatus };

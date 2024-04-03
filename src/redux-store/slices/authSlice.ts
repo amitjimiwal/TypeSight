@@ -15,6 +15,7 @@ interface AuthState {
      status: boolean;
      user: User | undefined;
 }
+
 const initialState: AuthState = {
      isLoading: false,
      status: false,
@@ -34,6 +35,10 @@ export const signupuser = createAsyncThunk("auth/register", async (load: SingupD
      const response = await axiosClient.post("/auth/register", load);
      return response;
 });
+export const logoutUser = createAsyncThunk("auth/logout", async () => {
+     const response = await axiosClient.get("/auth/logout");
+     return response;
+})
 const authSlice = createSlice({
      name: "auth",
      initialState,
@@ -74,6 +79,12 @@ const authSlice = createSlice({
                if (action.payload.success) {
                     state.status = true;
                     state.user = action.payload.data;
+               }
+          })
+          builder.addCase(logoutUser.fulfilled, (state, action) => {
+               if (action.payload.success) {
+                    state.status = false;
+                    state.user = undefined;
                }
           })
 

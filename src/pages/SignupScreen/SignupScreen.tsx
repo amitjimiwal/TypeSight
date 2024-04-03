@@ -18,6 +18,7 @@ const SignupScreen: React.FC = () => {
     handleSubmit,
   } = useForm<SingupData>();
   const submitHandler = function (data: SingupData) {
+    if (import.meta.env.VITE_APP_ENV === "development") console.log(data);
     dispatch(signupuser(data));
   };
   return (
@@ -53,7 +54,7 @@ const SignupScreen: React.FC = () => {
                 placeholder="m@example.com"
                 required
                 type="email"
-                {...register("name")}
+                {...register("email")}
               />
             </div>
             <div className="space-y-2 relative">

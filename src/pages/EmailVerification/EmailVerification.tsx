@@ -1,15 +1,18 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
 
 export default function Component() {
+  const { status, user } = useAuthStatus();
+  // const resendOtp = function () {};
   return (
     <div className="mx-auto space-y-6 max-w-sm">
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Verify your email</h1>
         <p className="text-gray-500 dark:text-gray-400">
           Enter the verification code we sent to
-          <strong>m@example.com</strong>
+          <strong>{status && user?.email}</strong>
         </p>
       </div>
       <div className="space-y-2">
