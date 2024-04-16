@@ -18,9 +18,9 @@ const routes = [
 const Navbar: React.FC = () => {
   const { pathname } = useLocation();
   return (
-    <nav className="flex justify-between items-center py-4 px-8 border-b">
+    <nav className="flex justify-between items-center py-4 px-6 border-b">
       <Link to="/">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-1">
           <img src="/logo.png" alt="Typesight Logo" className="h-10 w-10" />
           <span className="font-bold text-xl">TYPESIGHT</span>
         </div>
@@ -60,12 +60,14 @@ const Navbar: React.FC = () => {
                       </a>
                     </DropdownMenuItem>
                   ))}
-                  <Link
-                    className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
-                    to="/pricing"
-                  >
-                    Pricing
-                  </Link>
+                  <DropdownMenuItem key="pricing">
+                    <Link
+                      className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
+                      to="/pricing"
+                    >
+                      Pricing
+                    </Link>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
