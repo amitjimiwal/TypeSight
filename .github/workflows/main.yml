@@ -1,41 +1,34 @@
-# This is a basic workflow to help you get started with Actions
-name: CI-CD
+name: Check and Build
 
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [main,develop]
+    branches: 
+      - main
+      - develop
   pull_request:
-    branches: [main,develop]
-  # # Allows you to run this workflow manually from the Actions tab
-  # workflow_dispatch:
+    branches: 
+      - main
+      - develop
+  workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains multiple jobs
-  build_test:
-    # The type of runner that the job will run on
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+        node-version: [16.x] 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: setup node
-        uses: actions/setup-node@master
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
-      # install applicaion dependencies
       - name: Install dependencies
-        run: |
-          npm install
-      # build and test the apps
-      - name: build
-        run: |
-          npm run build
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
