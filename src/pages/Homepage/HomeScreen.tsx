@@ -24,7 +24,7 @@ const HomeScreen = () => {
           </p>
           <Button
             className="bg-blue-600 text-white"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/test")}
           >
             Explore now <ArrowRightIcon />
           </Button>

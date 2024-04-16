@@ -1,6 +1,9 @@
 import { axiosClient } from "@/api/axiosclient";
 import { LoginData, SingupData } from "@/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import toast from 'react-hot-toast';
+import { AxiosError } from "axios";
+import { ErrorResponse } from "@/types/interfaces";
 export interface User {
      id: number;
      createdAt: string;
@@ -15,29 +18,48 @@ interface AuthState {
      status: boolean;
      user: User | undefined;
 }
-
 const initialState: AuthState = {
      isLoading: false,
      status: false,
      user: undefined
 };
 
-export const getUserInfo = createAsyncThunk("auth/me", async () => {
-     const data = await axiosClient.get("/auth/me");
-     return data;
-})
+export const getUserInfo = createAsyncThunk("auth/me", async (_, { rejectWithValue }) => {
+     try {
+          const data = await axiosClient.get("/auth/me");
+          return data;
+     } catch (err: unknown) {
+          const error = err as AxiosError;
+          return rejectWithValue(error.response?.data);
+     }
+});
 
-export const loginUser = createAsyncThunk("auth/login", async (load: LoginData) => {
-     const data = await axiosClient.post("/auth/login", load);
-     return data;
+export const loginUser = createAsyncThunk("auth/login", async (load: LoginData, { rejectWithValue }) => {
+     try {
+          const data = await axiosClient.post("/auth/login", load);
+          return data;
+     } catch (err) {
+          const error = err as AxiosError;
+          return rejectWithValue(error.response?.data);
+     }
 });
-export const signupuser = createAsyncThunk("auth/register", async (load: SingupData) => {
-     const response = await axiosClient.post("/auth/register", load);
-     return response;
+export const signupuser = createAsyncThunk("auth/register", async (load: SingupData, { rejectWithValue }) => {
+     try {
+          const data = await axiosClient.post("/auth/register", load);
+          return data;
+     } catch (err) {
+          const error = err as AxiosError;
+          return rejectWithValue(error.response?.data);
+     }
 });
-export const logoutUser = createAsyncThunk("auth/logout", async () => {
-     const response = await axiosClient.get("/auth/logout");
-     return response;
+export const logoutUser = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
+     try {
+          const data = await axiosClient.get("/auth/logout");
+          return data;
+     } catch (err) {
+          const error = err as AxiosError;
+          return rejectWithValue(error.response?.data);
+     }
 })
 const authSlice = createSlice({
      name: "auth",
@@ -59,33 +81,42 @@ const authSlice = createSlice({
                state.isLoading = true;
           });
           builder.addCase(getUserInfo.fulfilled, (state, action) => {
+               const response = action.payload.data;
                state.isLoading = false;
-               if (action.payload.success) {
-                    state.status = true;
-                    state.user = action.payload.data;
-               }
+               state.status = true;
+               state.user = response.data;
           });
           builder.addCase(getUserInfo.rejected, (state) => {
                state.isLoading = false;
                state.status = false;
           });
           builder.addCase(loginUser.fulfilled, (state, action) => {
-               if (action.payload.success) {
-                    state.status = true;
-                    state.user = action.payload.data;
-               }
+               const response = action.payload.data;
+               toast.success(response.message);
+               state.status = true;
+               state.user = response.data;
           });
-          builder.addCase(signupuser.fulfilled, (state, action) => {
-               if (action.payload.success) {
-                    state.status = true;
-                    state.user = action.payload.data;
-               }
+          builder.addCase(loginUser.rejected, (_state, action) => {
+               const response = action.payload as ErrorResponse;
+               toast.error(response.message);
+          });
+          builder.addCase(signupuser.fulfilled, (_state, action) => {
+               const response = action.payload.data;
+               console.log(response);
+               toast.success(response.message);
           })
+          builder.addCase(signupuser.rejected, (_state, action) => {
+               const response = action.payload as ErrorResponse;
+               toast.error(response.message);
+          });
           builder.addCase(logoutUser.fulfilled, (state, action) => {
-               if (action.payload.success) {
-                    state.status = false;
-                    state.user = undefined;
-               }
+               state.user=undefined;
+               const response = action.payload.data;
+               toast.success(response.message);
+          })
+          builder.addCase(logoutUser.rejected, (_state, action) => {
+               const response = action.payload as ErrorResponse;
+               toast.success(response.message);
           })
 
      }

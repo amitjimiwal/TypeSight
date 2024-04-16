@@ -1,5 +1,8 @@
 import { axiosClient } from "@/api/axiosclient";
+import { ErrorResponse } from "@/types/interfaces";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 export interface ResultData {
      id: number;
@@ -11,17 +14,22 @@ export interface ResultData {
 }
 
 interface ResultState {
-     isLoading: boolean;
+     isLoadingResults: boolean;
      results: ResultData[] | undefined;
 }
 
 const initialState: ResultState = {
-     isLoading: false,
+     isLoadingResults: false,
      results: undefined,
 };
-export const getResultsInfo = createAsyncThunk("results/me", async (id: string) => {
-     const data = await axiosClient.get(`result/${id}`);
-     return data;
+export const getResultsInfo = createAsyncThunk("results/me", async (id: string, { rejectWithValue }) => {
+     try {
+          const data = await axiosClient.get(`result/${id}`);
+          return data;
+     } catch (error) {
+          const err = error as AxiosError;
+          return rejectWithValue(err.response?.data)
+     }
 })
 const resultSlice = createSlice({
      name: 'results',
@@ -29,16 +37,19 @@ const resultSlice = createSlice({
      reducers: {},
      extraReducers: (builder) => {
           builder.addCase(getResultsInfo.pending, (state) => {
-               state.isLoading = true;
+               state.isLoadingResults = true;
           });
           builder.addCase(getResultsInfo.fulfilled, (state, action) => {
-               state.isLoading = false;
-               if (action.payload.success) {
-                    state.results = action.payload.data;
-               }
+               state.isLoadingResults = false;
+               const response = action.payload.data;
+               state.results = response.data;
+               toast.success(response.message);
           });
-          builder.addCase(getResultsInfo.rejected, (state) => {
-               state.isLoading = false;
+          builder.addCase(getResultsInfo.rejected, (state, action) => {
+               state.isLoadingResults = false;
+               const response = action.payload as ErrorResponse;
+               toast.error(response.message);
+               console.log(response)
           });
      },
 })

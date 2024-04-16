@@ -13,14 +13,14 @@ const Protected = ({ children, authentication }: Props) => {
     if (authentication && status != true) {
       navigate("/login");
     }
+    if (!authentication && status === true) {
+      navigate(-1);
+    }
     if (status && authentication) {
       if (!user?.isEmailVerified) navigate("/verify");
     }
-    if (!authentication && status === true) {
-      navigate("/test");
-    }
     setloading(false);
-  }, [status, authentication, navigate, user?.isEmailVerified]);
+  }, [status, authentication, navigate,user?.isEmailVerified]);
   return loading ? null : <>{children}</>;
 };
 

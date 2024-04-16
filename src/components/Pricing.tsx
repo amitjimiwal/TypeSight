@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { SVGProps } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Pricing() {
+  const navigate = useNavigate();
   return (
-    <section className="w-full py-12 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-800 flex items-center justify-center">
-      <div className="relative flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-zinc-850 justify-between border border-purple-500">
+    <section className="w-full py-12 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-800 flex items-center justify-center h-screen">
+      <h1 className="w-1/2 text-3xl font-bold text-center p-4">TYPESIGHT comes with only onew feature plan to give you the unlimited experience</h1>
+      <div className="relative flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-zinc-850 justify-between border border-purple-500 w-1/3">
         <div className="px-3 py-1 text-sm text-white bg-gradient-to-r from-pink-500 to-purple-500 rounded-full inline-block absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           Popular
         </div>
@@ -29,7 +32,12 @@ export default function Pricing() {
           </ul>
         </div>
         <div className="mt-6">
-          <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500">
+          <Button
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-500"
+            onClick={() => {
+              navigate("/test");
+            }}
+          >
             Get Started
           </Button>
         </div>
