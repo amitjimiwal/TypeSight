@@ -16,9 +16,12 @@ import { logoutUser } from "@/redux-store/slices/authSlice";
 import { calculateAverage } from "@/lib/helpers/calculateUserAverage";
 import ChartView from "@/components/ChartView";
 import { ModeToggle } from "@/components/ui/toggle-theme";
+import { useSubscription } from "@/hooks/useSubscription";
+import History from "@/components/History";
 
 export default function Component() {
   const dispatch = useAppDispatch();
+  const { isProUser } = useSubscription();
   const { user } = useAuthStatus();
   const { results } = useResultStatus();
   const [averagedata, setAverageData] = useState({
@@ -29,18 +32,20 @@ export default function Component() {
     if (user?.id) {
       dispatch(getResultsInfo(String(user?.id)));
     }
+  }, [dispatch, user?.id]);
+  useEffect(() => {
     if (results) {
       const res = calculateAverage(results);
       setAverageData(res);
     }
-  }, [results, user?.id, dispatch]);
+  }, [results]);
   return (
     <div className="flex h-screen w-full flex-col p-0">
       <div className="flex h-full flex-row">
         <div className="flex flex-col flex-1">
           <header className="h-16 px-4 border-b shrink-0 md:px-6 flex items-center">
             <div className="flex items-center justify-end w-full gap-4 md:ml-auto md:gap-2 lg:gap-4">
-              {!user?.isProUser && (
+              {!isProUser && (
                 <Link
                   className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
                   to="/pricing"
@@ -86,12 +91,12 @@ export default function Component() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                   <CardTitle className="text-sm font-medium">
-                    Average score
+                    Average wpm
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-green-500">
-                    {averagedata.averageScore}
+                    {averagedata.averageScore.toFixed(1)}
                   </div>
                 </CardContent>
               </Card>
@@ -108,39 +113,53 @@ export default function Component() {
                 </CardContent>
               </Card>
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-medium">
-                    Score Overview
-                  </CardTitle>
-                  <CardDescription>
-                    Your score's Variations in the typing test
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="">
-                  {/* Chart Component Here */}
-                  <ChartView type="Score" />
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-medium">
-                    Accuracy Overview
-                  </CardTitle>
-                  <CardDescription>
-                    Your accuracy Variations in the typing test
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="">
-                  {/* Chart Component Here */}
-                  <ChartView type="Accuracy" />
-                </CardContent>
-              </Card>
+            <div>
+              <h1 className="text-xl font-bold text-black dark:text-white mb-4">
+                Test History
+              </h1>
+              <History results={results} />
             </div>
+            {isProUser && (
+              <div className="grid gap-4 md:grid-cols-2">
+                <Card>
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-medium">
+                      Wpm Overview
+                    </CardTitle>
+                    <CardDescription>
+                      Your wpm Variations in the typing test
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="">
+                    {/* Chart Component Here */}
+                    <ChartView type="Wpm" />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-medium">
+                      Accuracy Overview
+                    </CardTitle>
+                    <CardDescription>
+                      Your accuracy Variations in the typing test
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="">
+                    {/* Chart Component Here */}
+                    <ChartView type="Accuracy" />
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </main>
         </div>
       </div>
+      <Button
+        className="fixed bottom-7 left-10 object-cover w-fit shadow-2xl bg-gradient-to-r from-purple-400 to-fuchsia-600"
+        variant={"destructive"}
+      >
+        {isProUser ? "Manage Subscriptions" : "Go Pro"}
+      </Button>
     </div>
   );
 }

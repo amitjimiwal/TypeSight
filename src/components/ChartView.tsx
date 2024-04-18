@@ -45,11 +45,11 @@ export default function App({ type }: { type: string }) {
     datasets: [
       {
         label: type,
-        data: type === "Score" ? chartdata.scoresval : chartdata.accuracyval,
+        data: type === "Wpm" ? chartdata.scoresval : chartdata.accuracyval,
         borderColor:
-          type === "Score" ? "rgb(54, 162, 235)" : "rgb(255, 159, 64)",
+          type === "Wpm" ? "rgb(54, 162, 235)" : "rgb(255, 159, 64)",
         backgroundColor:
-          type === "Score" ? "rgb(54, 162, 235)" : "rgb(255, 159, 64)",
+          type === "Wpm" ? "rgb(54, 162, 235)" : "rgb(255, 159, 64)",
         borderWidth: 1,
       },
     ],

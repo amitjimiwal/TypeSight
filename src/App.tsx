@@ -7,10 +7,12 @@ import Footer from "./components/Footer";
 import { useDispatch } from "react-redux";
 import { getUserInfo } from "./redux-store/slices/authSlice";
 import { AppDispatch } from "./redux-store/store";
+import { getSubscriptionInfo } from "./redux-store/slices/subscriptionslice";
 function App() {
   const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
     dispatch(getUserInfo());
+    dispatch(getSubscriptionInfo());
   }, [dispatch]);
   return (
     <div className="min-h-screen w-full ">

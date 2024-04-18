@@ -24,7 +24,7 @@ const initialState: ResultState = {
 };
 export const getResultsInfo = createAsyncThunk("results/me", async (id: string, { rejectWithValue }) => {
      try {
-          const data = await axiosClient.get(`result/${id}`);
+          const data = await axiosClient.get(`/result/${id}`);
           return data;
      } catch (error) {
           const err = error as AxiosError;
@@ -49,7 +49,6 @@ const resultSlice = createSlice({
                state.isLoadingResults = false;
                const response = action.payload as ErrorResponse;
                toast.error(response.message);
-               console.log(response)
           });
      },
 })

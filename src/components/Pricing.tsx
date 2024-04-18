@@ -14,20 +14,20 @@ export default function Pricing() {
         <div>
           <h3 className="text-2xl font-bold text-center">Pro</h3>
           <div className="mt-4 text-center text-zinc-600 dark:text-zinc-400">
-            <span className="text-4xl font-bold">$59</span>/ month
+            <span className="text-4xl font-bold">&#8377; 1000</span>/ month
           </div>
           <ul className="mt-4 space-y-2">
             <li className="flex items-center dark:text-black">
               <CheckIcon className="text-white text-2xs bg-green-500 rounded-full mr-2 p-1 " />
-              100 daily Limit
+              Unlimited Test
             </li>
             <li className="flex items-center dark:text-black">
               <CheckIcon className="text-white text-xs bg-green-500 rounded-full mr-2 p-1" />
-              Unlimited Usage
+              Detailed Report of Wpm
             </li>
             <li className="flex items-center dark:text-black">
               <CheckIcon className="text-white text-xs bg-green-500 rounded-full mr-2 p-1" />
-              24/7 Support
+              Graphical Review of Accuracy and Wpm.
             </li>
           </ul>
         </div>

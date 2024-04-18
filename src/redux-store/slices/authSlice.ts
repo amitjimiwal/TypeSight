@@ -6,12 +6,12 @@ import { AxiosError } from "axios";
 import { ErrorResponse } from "@/types/interfaces";
 export interface User {
      id: number;
-     createdAt: string;
+     createdAt: Date;
      email: string;
      name: string;
-     password: string;
      isEmailVerified: boolean;
-     isProUser: boolean;
+     limit: number;
+     updatedAt: Date;
 }
 interface AuthState {
      isLoading: boolean;
@@ -110,7 +110,7 @@ const authSlice = createSlice({
                toast.error(response.message);
           });
           builder.addCase(logoutUser.fulfilled, (state, action) => {
-               state.user=undefined;
+               state.user = undefined;
                const response = action.payload.data;
                toast.success(response.message);
           })
