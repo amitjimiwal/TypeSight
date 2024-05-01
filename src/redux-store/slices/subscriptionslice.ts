@@ -19,7 +19,7 @@ interface SubscriptionState {
 
 const initialState: SubscriptionState = {
      isLoadingSubscription: false,
-     isProUser: true,
+     isProUser: false,
      subscriptionData: undefined,
 };
 export const getSubscriptionInfo = createAsyncThunk("mySubscription", async (_, { rejectWithValue }) => {

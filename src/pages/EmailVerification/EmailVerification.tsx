@@ -11,9 +11,11 @@ export default function Component() {
   const { otp, setotp, resendOtp, submitOtp } = useOtp();
   const { status, user } = useAuthStatus();
   useEffect(() => {
+    console.log("Testing console");
+
     if (status && user?.isEmailVerified) navigate(`/dashboard/${user.id}`);
-    if(!status) navigate("/login");
-  }, [status, navigate, user?.isEmailVerified,user?.id]);
+    if (!status) navigate("/login");
+  }, [status, navigate, user?.isEmailVerified, user?.id]);
 
   return (
     <div className="mx-auto space-y-6 max-w-sm">
@@ -43,7 +45,7 @@ export default function Component() {
         <Button className="w-full">Verify</Button>
       </form>
       <Button className="w-full" variant="outline" onClick={resendOtp}>
-          Resend code
+        Resend code
       </Button>
     </div>
   );

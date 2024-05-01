@@ -7,10 +7,11 @@ import ContactUS from "@/components/ContactUS";
 import Pricing from "@/components/Pricing";
 import { ArrowRightIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import FadeAnimate from "@/components/FadeAnimateWrapper";
 const HomeScreen = () => {
   const navigate = useNavigate();
   return (
-    <>
+    <FadeAnimate>
       {/* Banner */}
       <section className="flex flex-col lg:flex-row items-center justify-around  w-full min-h-[90vh]">
         <div className="max-w-xl mb-8 lg:mb-0">
@@ -133,7 +134,7 @@ const HomeScreen = () => {
       <Pricing />
       {/* Contact */}
       <ContactUS />
-    </>
+    </FadeAnimate>
   );
 };
 
