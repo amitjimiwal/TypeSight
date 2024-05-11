@@ -4,3 +4,33 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
+.word {
+  @apply text-3xl font-bold text-gray-400 flex;
+}
+.correct {
+  @apply text-green-500;
+}
+.wrong {
+  @apply text-red-500;
+}
+.typingBackgroundColor {
+  background-color: hsl(220 20% 14%);
+}
+.caret {
+  position: absolute;
+  height: 1.8rem;
+  top: 0;
+  border-right: 3px solid #e7d105;
+  animation: caret 1s infinite;
+  transition: all 0.2s ease;
+}
+
+@keyframes caret {
+  0%,
+  to {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
