@@ -1,76 +1,57 @@
 import React, { useEffect, useRef, useState } from "react";
 import ContentWrapper from "@/components/ContentWrapper";
 import Control from "@/components/Typing/Control";
-import TypingFooter from "@/components/Typing/TypingFooter";
 import shuffleWords from "@/lib/helpers/shufflewords";
 import { Game, KeyboardEventCustom, word } from "@/types/typinggame";
 import clsx from "clsx";
-import WrongWord from "@/components/WrongWord";
-import { set } from "lodash";
 import CameraComponent from "@/components/Typing/CameraComponent";
+import { ArrowTopLeftIcon } from "@radix-ui/react-icons";
+import TypingResult from "@/components/Typing/TypingResult";
 const TypingTest = () => {
   const [time, setTime] = useState<number>(30);
   const [game, setGame] = useState<Game>("waiting");
   const typedLetter = useRef<string>("");
+  const countLookedOnKeyboard = useRef<number>(0);
+  const [showResults, setShowResults] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const words = useRef<word[]>(shuffleWords("words"));
   const [wordIdx, setwordIdx] = useState<number>(0);
   const [letterIdx, setLetterIdx] = useState<number>(0);
-  const [score, setScore] = useState<number>(0);
+  const [wpm, setWpm] = useState<number>(0);
+  const [accuracy, setAccuracy] = useState<number>(0);
   const [correctLetters, setCorrectLetters] = useState<number>(0);
-  const [wrongLetters, setWrongLetters] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const wordBoxRef = useRef<HTMLDivElement>(null);
   const cursorEl = useRef<HTMLDivElement>(null);
   let letterRef: HTMLSpanElement;
-  function setGameTimer() {
-    function gameTimer() {
-      if (time > 0) {
-        setTime((t) => t - 1);
-      }
-      if (game === "waiting" || time === 0) {
-        clearInterval(interval);
-      }
-
-      if (time === 0) {
-        setGame("finished");
-        // getResults()
-      }
-    }
-    const interval = setInterval(gameTimer, 1000);
-  }
   function updateGameState(event: React.ChangeEvent<HTMLInputElement>) {
-    typedLetter.current = event.target.value;
-    console.log("typed" + typedLetter.current);
-    setLetter();
-    // console.log(
-    //   "Checking letter with " + typedLetter.current + letterRef.innerText
-    // );
-    checkLetter();
-    setLetterIdx((l) => l + 1);
-    updateLine();
-    // moveCaret();
-    // resetLetter();
+    if (game === "in progress") {
+      typedLetter.current = event.target.value;
+      // console.log("typed" + typedLetter.current);
+      setLetter();
+      checkLetter();
+      setLetterIdx((l) => l + 1);
+      updateLine();
+      moveCaret();
+    }
   }
-  // function moveCaret() {
-  //   const offset = 4;
-  //   console.log(letterRef);
-  //   if (cursorEl.current) {
-  //     cursorEl.current.style.top = `${letterRef.offsetTop + offset}px`;
-  //     cursorEl.current.style.left = `${
-  //       letterRef.offsetLeft + letterRef.offsetWidth
-  //     }px`;
-  //   }
-  // }
-
-  function resetLetter() {
-    typedLetter.current = "";
+  function countKeyboardFaults(){
+    countLookedOnKeyboard.current++;
+  }
+  function moveCaret() {
+    const offset = 4;
+    if (cursorEl.current) {
+      cursorEl.current.style.top = `${letterRef.offsetTop + offset}px`;
+      cursorEl.current.style.left = `${
+        letterRef.offsetLeft + letterRef.offsetWidth
+      }px`;
+    }
   }
   function nextWord() {
     const isNotFirstLetter = letterIdx !== 0;
     const isOneLetterWord = words.current[wordIdx].length === 1;
 
     if (isNotFirstLetter || isOneLetterWord) {
-      // moveCaret();
       setwordIdx((w) => w + 1);
       setLetterIdx(0);
       increaseScore();
@@ -78,22 +59,12 @@ const TypingTest = () => {
   }
   function startGame() {
     setGame("in progress");
-    setGameTimer();
   }
   function setLetter() {
     //used for setting the currentLetter that is being checked
     //check if current word completed
     const wordCompleted = letterIdx > words.current[wordIdx].length - 1;
     console.log(letterIdx + "" + wordCompleted);
-    // if (wordCompleted && typedLetter.current === " ") {
-    //   console.log("Word completed and space");
-    //   nextWord();
-    //   letterRef = wordBoxRef?.current?.children[wordIdx].children[
-    //     letterIdx
-    //   ] as HTMLSpanElement;
-    // }
-    // console.log(wordBoxRef?.current);
-    // console.log(wordBoxRef?.current?.children[wordIdx].children[letterIdx]);
     if (!wordCompleted) {
       letterRef = wordBoxRef?.current?.children[wordIdx].children[
         letterIdx
@@ -105,15 +76,36 @@ const TypingTest = () => {
       span.innerText = typedLetter.current.slice(-1);
       wordBoxRef?.current?.children[wordIdx].appendChild(span);
       letterRef = span;
-      setWrongLetters((w) => w + 1);
     }
+  }
+  function getWordsPerMinute() {
+    const word = 5;
+    const minutes = 0.5;
+    return Math.floor((correctLetters-countLookedOnKeyboard.current) / word / minutes);
+  }
+  function getAccuracy() {
+    const totalLetters = getTotalLetters(words.current);
+    return Math.floor(((correctLetters-countLookedOnKeyboard.current) / totalLetters) * 100);
+  }
+  function getTotalLetters(words: word[]) {
+    return words.reduce((count, word) => count + word.length, 0);
+  }
+  function getResults() {
+    setWpm(getWordsPerMinute());
+    setAccuracy(getAccuracy());
+    setShowResults(true);
   }
   function updateLine() {
     const wordEl = wordBoxRef?.current?.children[wordIdx];
     const wordsY = wordBoxRef?.current?.getBoundingClientRect().y ?? 0;
     const wordY = wordEl?.getBoundingClientRect().y ?? 0;
+    console.log("word " + wordY);
+    console.log("words " + wordsY);
     if (wordY > wordsY) {
-      wordBoxRef?.current?.scrollIntoView({ block: "center" });
+      wordBoxRef?.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
   }
   function checkLetter() {
@@ -128,36 +120,32 @@ const TypingTest = () => {
       letterIdx < typedLetter.current.length &&
       typedLetter.current.slice(-1) !== currentLetter
     ) {
-      setWrongLetters((w) => w + 1);
       letterRef.classList.add("wrong");
     }
   }
   function increaseScore() {
-    setScore((score) => score + 1);
-  }
-  function decreaseScore() {
-    setScore((score) => score - 1);
+    setCorrectLetters((letter) => letter + 1);
   }
 
-  function previousWord() {
-    if (wordIdx === 0 && letterIdx === 0) return;
-    if (letterIdx == 0 && wordIdx > 0) {
-      console.log(letterRef);
-      setwordIdx((w) => w - 1);
-      letterRef.classList.remove("correct");
-      letterRef.classList.remove("wrong");
-      setLetterIdx(words.current[wordIdx].length - 1);
-      setLetter();
-      setLetter();
-      return;
-    }
-    if (letterIdx > 0) {
-      letterRef.classList.remove("correct");
-      letterRef.classList.remove("wrong");
-      setLetterIdx((l) => l - 1);
-      setLetter();
-    }
-  }
+  // function previousWord() {
+  //   if (wordIdx === 0 && letterIdx === 0) return;
+  //   if (letterIdx == 0 && wordIdx > 0) {
+  //     console.log(letterRef);
+  //     setwordIdx((w) => w - 1);
+  //     letterRef.classList.remove("correct");
+  //     letterRef.classList.remove("wrong");
+  //     setLetterIdx(words.current[wordIdx].length - 1);
+  //     setLetter();
+  //     setLetter();
+  //     return;
+  //   }
+  //   if (letterIdx > 0) {
+  //     letterRef.classList.remove("correct");
+  //     letterRef.classList.remove("wrong");
+  //     setLetterIdx((l) => l - 1);
+  //     setLetter();
+  //   }
+  // }
   function handleKeyDown(event: KeyboardEventCustom<HTMLInputElement>) {
     console.log("Writing SOmething");
     if (event.code === "Space") {
@@ -165,51 +153,102 @@ const TypingTest = () => {
       if (game === "in progress") {
         typedLetter.current = "";
         nextWord();
+        moveCaret();
       }
     }
     if (event.code === "Backspace") {
       console.log("Backspace");
-      // previousWord();
     }
     if (game === "waiting") startGame();
   }
   useEffect(() => {
-    inputRef.current?.focus();
+    const id = setInterval(() => {
+      if (game == "in progress") setTime((prev) => prev - 1);
+    }, 1000);
+    if (game === "finished" || time === 0) {
+      clearInterval(id);
+      setTime(30);
+      setGame("finished");
+      getResults();
+      setShowResults(true);
+    }
+    return () => clearInterval(id);
+  }, [game, time]);
+  useEffect(() => {
+    window.addEventListener("keydown", () => {
+      console.log(inputRef.current?.value);
+      typedLetter.current = "";
+      setIsFocused(true);
+      inputRef.current?.focus();
+    });
+    return () => {
+      window.removeEventListener("keydown", function () {});
+    };
   }, []);
   return (
     <div className="typingBackgroundColor">
-      <ContentWrapper props="w-screen h-screen flex flex-col justify-around">
+      <ContentWrapper props="w-screen h-screen flex flex-col gap-20">
         <Control />
-        <CameraComponent isGameStarted={game==='in progress'}/>
-        <div className="text-2xl font-extrabold text-green-400">{time}s</div>
-        {/* Hidden input to take user's typed words */}
-        <input
-          type="text"
-          className=""
-          value={typedLetter.current}
-          onInput={updateGameState}
-          onKeyDown={handleKeyDown}
-          ref={inputRef}
-        />
-        <div className="w-full flex flex-wrap gap-4 relative" ref={wordBoxRef}>
-          {words.current.map((word, index) => (
-            <span
-              className={clsx(
-                "word",
-                wordIdx === index && "underline underline-offset-8"
-              )}
-              key={index}
-            >
-              {word.split("").map((character, idx) => (
-                <span className={clsx("letter")} key={idx}>
-                  {character}
-                </span>
-              ))}
-            </span>
-          ))}
-          <div className="caret" ref={cursorEl}></div>
-        </div>
-        <TypingFooter />
+        {!showResults ? (
+          <>
+            {/* Camera Component */}
+            <CameraComponent isGameStarted={game === "in progress"} countFaults={countKeyboardFaults} />
+            <div className="text-2xl font-extrabold text-green-400">
+              {time}s
+            </div>
+            <div className="relative w-full">
+              <input
+                type="text"
+                className="absolute left-0 top-12 opacity-0 -z-0"
+                value={typedLetter.current}
+                onInput={updateGameState}
+                onKeyDown={handleKeyDown}
+                ref={inputRef}
+              />
+              {!isFocused && (
+                <div className="absolute w-full text-center text-white font-bold z-[999] pointer-events-none">
+                  <div>
+                    <ArrowTopLeftIcon style={{ display: "inline" }} /> Click or
+                    type to Focus
+                  </div>
+                </div>
+              )}{" "}
+              {/* Words Container */}
+              <div
+                className={clsx(
+                  "relative w-full flex flex-wrap gap-4  -mt-20 overflow-hidden select-none",
+                  !isFocused && "blurred"
+                )}
+                ref={wordBoxRef}
+                onClick={() => {
+                  if (!isFocused) {
+                    setIsFocused(true);
+                    inputRef.current?.focus();
+                  }
+                }}
+              >
+                {words.current.map((word, index) => (
+                  <span
+                    className={clsx(
+                      "word",
+                      wordIdx === index && "underline underline-offset-8"
+                    )}
+                    key={index}
+                  >
+                    {word.split("").map((character, idx) => (
+                      <span className={clsx("letter")} key={idx}>
+                        {character}
+                      </span>
+                    ))}
+                  </span>
+                ))}
+                <div className="caret" ref={cursorEl}></div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <TypingResult wpm={wpm} accuracy={accuracy} faults={countLookedOnKeyboard.current} />
+        )}
       </ContentWrapper>
     </div>
   );

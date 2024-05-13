@@ -18,6 +18,9 @@ module.exports = {
     },
     extend: {
       colors: {
+        mainColor: "var(--main-color)",
+        typingText: "var(--typing-text)",
+        subColor: "var(--typing-navbar)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

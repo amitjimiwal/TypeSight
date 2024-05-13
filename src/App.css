@@ -5,7 +5,7 @@
   scroll-behavior: smooth;
 }
 .word {
-  @apply text-3xl font-bold text-gray-400 flex;
+  @apply text-2xl font-extrabold text-gray-400 flex;
 }
 .correct {
   @apply text-green-500;
@@ -14,7 +14,7 @@
   @apply text-red-500;
 }
 .typingBackgroundColor {
-  background-color: hsl(220 20% 14%);
+  background-color: var(--typing-background);
 }
 .caret {
   position: absolute;
@@ -33,4 +33,9 @@
   50% {
     opacity: 1;
   }
+}
+.blurred {
+  opacity: 0.25;
+  filter: blur(4px);
+  -webkit-filter: blur(4px);
 }

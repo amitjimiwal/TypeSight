@@ -13,6 +13,11 @@ export interface ResultData {
      createdAt: string;
 }
 
+export interface ResultPayLoad{
+     score:number;
+     accuracy:number;
+     duration:number;
+}
 interface ResultState {
      isLoadingResults: boolean;
      results: ResultData[] | undefined;
@@ -31,6 +36,15 @@ export const getResultsInfo = createAsyncThunk("results/me", async (id: string, 
           return rejectWithValue(err.response?.data)
      }
 })
+export const addResultIfo=createAsyncThunk("results/add",async (data:ResultPayLoad,{rejectWithValue})=>{
+     try{
+          const response=await axiosClient.post("/result/add",data);
+          return response;
+     }catch(error){
+          const err=error as AxiosError;
+          return rejectWithValue(err.response?.data);
+     }
+});
 const resultSlice = createSlice({
      name: 'results',
      initialState,
@@ -48,6 +62,14 @@ const resultSlice = createSlice({
           builder.addCase(getResultsInfo.rejected, (state, action) => {
                state.isLoadingResults = false;
                const response = action.payload as ErrorResponse;
+               toast.error(response.message);
+          });
+          builder.addCase(addResultIfo.fulfilled, (_,action) => {
+               const response=action.payload.data;
+               toast.success(response.message);
+          });
+          builder.addCase(addResultIfo.rejected, (_,action) => {
+               const response=action.payload as ErrorResponse;
                toast.error(response.message);
           });
      },
