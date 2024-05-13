@@ -1,12 +1,48 @@
+import handleCheckout from "@/api/payment/handleCheckout";
 import { Button } from "@/components/ui/button";
-import { SVGProps } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSubscription } from "@/hooks/useSubscription";
+import { SVGProps, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Pricing() {
+  const {isProUser}=useSubscription();
+  const sessionUrl=useRef<string>("");
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
   const navigate = useNavigate();
+  useEffect(() => {
+    handleCheckout().then((redirect_url) => {
+      console.log(redirect_url);
+      sessionUrl.current = redirect_url;
+    }).catch(() => {
+      toast.error("Error in Generating you session Url");
+    });
+  }, []);
+  if (params.get("success") == "true") {
+    toast.success("Payment SuccessFul");
+    setTimeout(() => {
+      navigate("/test");
+    }, 2000);
+    return (
+      <section className="w-full py-12 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-800 flex items-center justify-center h-screen flex-col sm:flex-row">
+        <CheckIcon /> Redirecting to DashBoard{" "}
+        <span className="animate-bounce text-xl font-extrabold">.</span>
+        <span className="animate-bounce text-xl font-extrabold">.</span>
+        <span className="animate-bounce text-xl font-extrabold">.</span>
+        <span className="animate-bounce text-xl font-extrabold">.</span>
+      </section>
+    );
+  }
+  if (params.get("success") == "false") {
+    toast.error("Payment Failed");
+  }
   return (
     <section className="w-full py-12 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-800 flex items-center justify-center h-screen flex-col sm:flex-row">
-      <h1 className="w-1/2 sm:text-3xl font-bold text-center p-4">TYPESIGHT comes with only one feature plan to give you the unlimited experience</h1>
+      <h1 className="w-1/2 sm:text-3xl font-bold text-center p-4">
+        TYPESIGHT comes with only one feature plan to give you the unlimited
+        experience
+      </h1>
       <div className="relative flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-zinc-850 justify-between border border-purple-500 sm:w-1/3">
         <div className="px-3 py-1 text-sm text-white bg-gradient-to-r from-pink-500 to-purple-500 rounded-full inline-block absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           Popular
@@ -35,10 +71,10 @@ export default function Pricing() {
           <Button
             className="w-full bg-gradient-to-r from-pink-500 to-purple-500"
             onClick={() => {
-              navigate("/test");
+              window.location.href=sessionUrl.current;
             }}
           >
-            Get Started
+            {isProUser ? "Manage Subscription" : "Subscribe Now"}
           </Button>
         </div>
       </div>
@@ -64,3 +100,4 @@ function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+

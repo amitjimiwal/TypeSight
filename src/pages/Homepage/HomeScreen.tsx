@@ -4,7 +4,6 @@ import banner from "../../assets/images/banner.jpeg";
 import about from "../../assets/images/about.png";
 import CheckCircleIcon from "@/icons/Checkicon";
 import ContactUS from "@/components/ContactUS";
-import Pricing from "@/components/Pricing";
 import { ArrowRightIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import FadeAnimate from "@/components/FadeAnimateWrapper";
@@ -130,8 +129,6 @@ const HomeScreen = () => {
           </div>
         </div>
       </section>
-      {/* Pricing */}
-      <Pricing />
       {/* Contact */}
       <ContactUS />
     </FadeAnimate>
