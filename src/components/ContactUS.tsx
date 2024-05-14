@@ -1,3 +1,4 @@
+import { PopupButton } from "@typeform/embed-react";
 export default function ContactUS() {
   return (
     <section
@@ -80,88 +81,18 @@ export default function ContactUS() {
             in touch with us. We look forward to hearing from you!
           </p>
         </div>
-        <div className="mt-12">
-          <form
-            action="#"
-            className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
-            method="POST"
+        <PopupButton
+          id={String(import.meta.env.VITE_APP_TYPEFORM_FEEDBACK_ID)}
+          style={{ fontSize: 20 ,width: "100%", marginTop: "20px"}}
+          className="my-button"
+        >
+          <button
+            className="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            type="submit"
           >
-            <div>
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="first-name"
-              >
-                Name
-              </label>
-              <div className="mt-1">
-                <input
-                  autoComplete="given-name"
-                  className="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-                  id="first-name"
-                  name="first-name"
-                  type="text"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="email"
-              >
-                Email Address
-              </label>
-              <div className="mt-1">
-                <input
-                  autoComplete="email"
-                  className="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-                  id="email"
-                  name="email"
-                  type="email"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="subject"
-              >
-                Subject
-              </label>
-              <div className="mt-1">
-                <input
-                  className="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-                  id="subject"
-                  name="subject"
-                  type="text"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="message"
-              >
-                Your Message
-              </label>
-              <div className="mt-1">
-                <textarea
-                  className="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"
-                  id="message"
-                  name="message"
-                  rows={4}
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <button
-                className="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                type="submit"
-              >
-                Send Message
-              </button>
-            </div>
-          </form>
-        </div>
+            Send Your FeedBack/Query
+          </button>
+        </PopupButton>
       </div>
     </section>
   );

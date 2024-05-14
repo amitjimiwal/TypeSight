@@ -1,7 +1,6 @@
 import { axiosClient } from "@/api/axiosclient";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-const DAY_IN_MS = 86_400_400;
 export interface SubscriptionData {
      id: number;
      userID: number;
@@ -43,7 +42,7 @@ const resultSlice = createSlice({
                state.isLoadingSubscription = false;
                const response = action.payload.data;
                state.subscriptionData = response.data;
-               if (state.subscriptionData?.stripePriceId && state.subscriptionData?.stripeCurrentPeriodEnd.getTime() + DAY_IN_MS > Date.now()) {
+               if (state.subscriptionData?.stripePriceId && new Date(state.subscriptionData?.stripeCurrentPeriodEnd)> new Date()) {
                     state.isProUser = true;
                }
           });

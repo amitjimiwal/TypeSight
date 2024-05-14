@@ -1,42 +1,17 @@
-import handleCheckout from "@/api/payment/handleCheckout";
-import { Button } from "@/components/ui/button";
-import { useAuthStatus } from "@/hooks/useAuthStatus";
-import { useSubscription } from "@/hooks/useSubscription";
-import { SVGProps, useEffect, useState } from "react";
+import { SVGProps, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import SubscriptionButton from "./SubscriptionButton";
 
 export default function Pricing() {
-  const {isProUser}=useSubscription();
-  const {status}=useAuthStatus();
-  const [sessionUrl,setSessionUrl]=useState<string>("");
   const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if(status){
-      handleCheckout().then((redirect_url) => {
-        console.log(redirect_url);
-        setSessionUrl(redirect_url);
-      }).catch(() => {
-        toast.error("Error in Generating you session Url");
-      });
-    }
-  }, [status]);
+  if (params.get("redirect") && params.get("redirect") === "billingportal") {
+    return <Redirecting to="/" />;
+  }
   if (params.get("success") == "true") {
     toast.success("Payment SuccessFul");
-    setTimeout(() => {
-      navigate("/test");
-    }, 2000);
-    return (
-      <section className="w-full py-12 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-800 flex items-center justify-center h-screen flex-col sm:flex-row">
-        <CheckIcon /> Redirecting to DashBoard{" "}
-        <span className="animate-bounce text-xl font-extrabold">.</span>
-        <span className="animate-bounce text-xl font-extrabold">.</span>
-        <span className="animate-bounce text-xl font-extrabold">.</span>
-        <span className="animate-bounce text-xl font-extrabold">.</span>
-      </section>
-    );
+    return <Redirecting to="/test" />;
   }
   if (params.get("success") == "false") {
     toast.error("Payment Failed");
@@ -72,18 +47,7 @@ export default function Pricing() {
           </ul>
         </div>
         <div className="mt-6">
-          <Button
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-500"
-            onClick={() => {
-              if(!status){
-                navigate("/login");
-              }else{
-                window.location.href=sessionUrl;
-              }
-            }}
-          >
-            { (status && isProUser) ? "Manage Subscription" : "Subscribe Now"}
-          </Button>
+          <SubscriptionButton />
         </div>
       </div>
     </section>
@@ -109,3 +73,23 @@ function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   );
 }
 
+function Redirecting({ to = "/" }: { to: string }) {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const id = setTimeout(() => {
+      navigate(`${to}`);
+    }, 2000);
+    return () => {
+      clearTimeout(id);
+    };
+  }, []);
+  return (
+    <section className="w-full py-12 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-800 flex items-center justify-center h-screen flex-col sm:flex-row">
+      <CheckIcon /> Redirecting{" "}
+      <span className="animate-bounce text-xl font-extrabold">.</span>
+      <span className="animate-bounce text-xl font-extrabold">.</span>
+      <span className="animate-bounce text-xl font-extrabold">.</span>
+      <span className="animate-bounce text-xl font-extrabold">.</span>
+    </section>
+  );
+}

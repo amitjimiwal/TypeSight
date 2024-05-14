@@ -18,6 +18,7 @@ import ChartView from "@/components/ChartView";
 import { ModeToggle } from "@/components/ui/toggle-theme";
 import { useSubscription } from "@/hooks/useSubscription";
 import History from "@/components/History";
+import SubscriptionButton from "@/components/SubscriptionButton";
 
 export default function Component() {
   const dispatch = useAppDispatch();
@@ -45,12 +46,12 @@ export default function Component() {
         <div className="flex flex-col flex-1">
           <header className="h-16 px-4 border-b shrink-0 md:px-6 flex items-center">
             <div className="flex items-center justify-end w-full gap-4 md:ml-auto md:gap-2 lg:gap-4">
-            <Link
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
-                  to="/test"
-                >
-                  Test
-                </Link>
+              <Link
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
+                to="/test"
+              >
+                Test
+              </Link>
               {!isProUser && (
                 <Link
                   className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
@@ -160,12 +161,15 @@ export default function Component() {
           </main>
         </div>
       </div>
-      <Button
+      {/* <Button
         className="fixed bottom-7 left-10 object-cover w-fit shadow-2xl bg-gradient-to-r from-purple-400 to-fuchsia-600"
         variant={"destructive"}
       >
         {isProUser ? "Manage Subscriptions" : "Go Pro"}
-      </Button>
+      </Button> */}
+      <div className="fixed bottom-7 left-10">
+        <SubscriptionButton />
+      </div>
     </div>
   );
 }
