@@ -45,6 +45,12 @@ export default function Component() {
         <div className="flex flex-col flex-1">
           <header className="h-16 px-4 border-b shrink-0 md:px-6 flex items-center">
             <div className="flex items-center justify-end w-full gap-4 md:ml-auto md:gap-2 lg:gap-4">
+            <Link
+                  className="text-gray-600 hover:text-gray-900 dark:text-gray-200"
+                  to="/test"
+                >
+                  Test
+                </Link>
               {!isProUser && (
                 <Link
                   className="text-gray-600 hover:text-gray-900 dark:text-gray-200"

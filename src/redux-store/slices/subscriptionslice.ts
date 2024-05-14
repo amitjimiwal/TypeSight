@@ -24,7 +24,7 @@ const initialState: SubscriptionState = {
 };
 export const getSubscriptionInfo = createAsyncThunk("mySubscription", async (_, { rejectWithValue }) => {
      try {
-          const data = await axiosClient.get(`/mysubscription`);
+          const data = await axiosClient.get(`/pro/mysubscription`);
           return data;
      } catch (error) {
           const err = error as AxiosError;
@@ -54,5 +54,4 @@ const resultSlice = createSlice({
           });
      },
 })
-
 export default resultSlice.reducer;

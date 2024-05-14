@@ -1,4 +1,5 @@
 import React from "react";
+import DashboardIcon from "./DashboardIcon";
 
 const Control = () => {
   return (
@@ -7,16 +8,17 @@ const Control = () => {
         <img src="/logo.png" alt="Typesight Logo" className="h-10 w-10" />
         TypeSight
       </h1>
-      <div className="flex justify-end gap-5">
-        {/* <select className="px-3 rounded-xl bg-white text-black">
+      <DashboardIcon />
+      {/* <div className="flex justify-end gap-5">
+        <select className="px-3 rounded-xl bg-white text-black">
           <option>30s</option>
           <option>60s</option>
-        </select> */}
-        {/* <select className="px-3 rounded-xl bg-white text-black">
+        </select>
+        <select className="px-3 rounded-xl bg-white text-black">
           <option>words</option>
           <option>sentences</option>
-        </select> */}
-      </div>
+        </select>
+      </div> */}
     </nav>
   );
 };

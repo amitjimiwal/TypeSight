@@ -1,24 +1,28 @@
 import handleCheckout from "@/api/payment/handleCheckout";
 import { Button } from "@/components/ui/button";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { useSubscription } from "@/hooks/useSubscription";
-import { SVGProps, useEffect, useRef } from "react";
+import { SVGProps, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Pricing() {
   const {isProUser}=useSubscription();
-  const sessionUrl=useRef<string>("");
+  const {status}=useAuthStatus();
+  const [sessionUrl,setSessionUrl]=useState<string>("");
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const navigate = useNavigate();
   useEffect(() => {
-    handleCheckout().then((redirect_url) => {
-      console.log(redirect_url);
-      sessionUrl.current = redirect_url;
-    }).catch(() => {
-      toast.error("Error in Generating you session Url");
-    });
-  }, []);
+    if(status){
+      handleCheckout().then((redirect_url) => {
+        console.log(redirect_url);
+        setSessionUrl(redirect_url);
+      }).catch(() => {
+        toast.error("Error in Generating you session Url");
+      });
+    }
+  }, [status]);
   if (params.get("success") == "true") {
     toast.success("Payment SuccessFul");
     setTimeout(() => {
@@ -71,10 +75,14 @@ export default function Pricing() {
           <Button
             className="w-full bg-gradient-to-r from-pink-500 to-purple-500"
             onClick={() => {
-              window.location.href=sessionUrl.current;
+              if(!status){
+                navigate("/login");
+              }else{
+                window.location.href=sessionUrl;
+              }
             }}
           >
-            {isProUser ? "Manage Subscription" : "Subscribe Now"}
+            { (status && isProUser) ? "Manage Subscription" : "Subscribe Now"}
           </Button>
         </div>
       </div>
