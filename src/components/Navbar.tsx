@@ -30,6 +30,7 @@ const Navbar: React.FC = () => {
           <>
             {/* Desktop Navbar */}
             <div className="hidden sm:flex gap-4">
+            <iframe src="https://ghbtns.com/github-btn.html?user=amitjimiwal&repo=TypeSight&type=star&size=large" width="70" height="30" title="GitHub"></iframe>
               {routes.map((route) => (
                 <a
                   key={route.id}
@@ -49,6 +50,7 @@ const Navbar: React.FC = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center">
+                <iframe src="https://ghbtns.com/github-btn.html?user=amitjimiwal&repo=TypeSight&type=star&size=large" width="70" height="30" title="GitHub"></iframe>
                   {routes.map((route) => (
                     <DropdownMenuItem key={route.id}>
                       <a

@@ -43,6 +43,7 @@ const Footer: React.FC = () => {
           </span>
           . All Rights Reserved.
         </span>
+        <iframe src="https://ghbtns.com/github-btn.html?user=amitjimiwal&repo=TypeSight&type=star&size=large" width="70" height="30" title="GitHub"></iframe>
       </div>
     </footer>
   );

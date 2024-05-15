@@ -1,6 +1,6 @@
 <h1 align="center" id="title">TypeSight</h1>
 
-<p align="center"><img src="https://socialify.git.ci/amitjimiwal/TypeSight/image?description=1&amp;descriptionEditable=TypeSight%3A%20The%20Typing%20Test%20with%20Eye%20Detection&amp;language=1&amp;name=1&amp;owner=1&amp;pattern=Signal&amp;theme=Light" alt="project-image"></p>
+<p align="center"><img src="https://socialify.git.ci/amitjimiwal/TypeSight/image?language=1&name=1&stargazers=1&theme=Light" alt="project-image"></p>
 
 <p id="description">TypeSight the premier destination for typing speed and accuracy tests. Whether you’re a professional typist or just looking to improve your skills we’ve got you covered.</p>
 
@@ -10,11 +10,10 @@
 
 Here're some of the project's best features:
 
-*   Accurate Results
-*   Increased Typing Accuracy
-*   Detailed Reports
-
-  
+*  Accurate Results
+*  Increased Typing Accuracy
+*  Detailed Reports
+*  Real-time Eye Tracking
 <h2>🚀 Demo Video</h2>
 
 https://github.com/amitjimiwal/TypeSight/assets/90555965/401d1f45-c31d-4d97-8c22-890f6b7504c9

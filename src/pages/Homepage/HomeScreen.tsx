@@ -15,7 +15,7 @@ const HomeScreen = () => {
       <section className="flex flex-col lg:flex-row items-center justify-around  w-full min-h-[90vh]">
         <div className="max-w-xl mb-8 lg:mb-0">
           <h1 className="text-5xl font-bold mb-6">
-            TypeSight: The Ultimate Typing Test
+            TypeSight: The typing test with eye detection
           </h1>
           <p className="text-gray-700 mb-6 dark:text-gray-200">
             Welcome to TypeSight, the premier destination for typing speed and
@@ -62,8 +62,7 @@ const HomeScreen = () => {
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-200">
               At TypeSight, we are committed to helping individuals enhance
               their typing skills and improve their productivity. Our platform
-              offers a range of services, including typing tests, keyboard speed
-              checks, and typing accuracy checks, that help users achieve their
+              offers a range of services, including typing tests, and typing accuracy checks, that help users achieve their
               goals and reach their full potential. Our team of dedicated
               experts is here to support you every step of the way, and we are
               committed to providing exceptional service and delivering
