@@ -10,8 +10,8 @@ const TypingResult = ({ wpm, accuracy ,faults}: { wpm: number; accuracy: number 
      const dispatch=useAppDispatch();
 //   update the data to the database
   function updateData() {
-    data.score = wpm;
-    data.accuracy = accuracy;
+    data.score = wpm >0 ? wpm :0;
+    data.accuracy = accuracy >0 ? accuracy :0;
     if (import.meta.env.VITE_APP_ENV === "development") console.log(data);
     dispatch(addResultIfo(data));
   }
