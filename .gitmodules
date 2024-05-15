@@ -1,0 +1,6 @@
+[submodule "sight-backend"]
+	path = sight-backend
+	url = https://github.com/amitjimiwal/sight-backend
+[submodule "EyeDirection"]
+	path = EyeDirection
+	url = https://github.com/amitjimiwal/EyeDirection
