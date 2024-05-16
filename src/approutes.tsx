@@ -1,14 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
+import { Suspense, lazy } from "react";
 import HomeScreen from "./pages/Homepage/HomeScreen";
 import SignupScreen from "./pages/SignupScreen/SignupScreen";
 import LoginScreen from "./pages/LoginScreen/LoginScreen";
 import EmailVerification from "./pages/EmailVerification/EmailVerification";
 import Protected from "./components/Protected";
-import TypingTest from "./pages/Typingtest/TypingTest";
-import DashBoard from "./pages/Dashboard/DashBoard";
+const TypingTest = lazy(() => import("./pages/Typingtest/TypingTest"));
+const DashBoard = lazy(() => import("./pages/Dashboard/DashBoard"));
 import GettingStarted from "./pages/GettingStarted/GettingStarted";
 import Pricing from "./components/Pricing";
+import NotFound from "./pages/404/NotFound";
+import PageLoading from "./components/PageLoading";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -56,22 +59,30 @@ const router = createBrowserRouter([
   {
     path: "/test",
     element: (
-      <Protected authentication={true}>
-        <TypingTest />
-      </Protected>
+      <Suspense fallback={<PageLoading />}>
+        <Protected authentication={true}>
+          <TypingTest />
+        </Protected>
+      </Suspense>
     ),
   },
   {
     path: "/dashboard/:id",
     element: (
+      <Suspense fallback={<PageLoading />}>
       <Protected authentication={true}>
         <DashBoard />
       </Protected>
+    </Suspense>
     ),
   },
   {
     path: "/pricing",
     element: <Pricing />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 export default router;

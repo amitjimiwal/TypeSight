@@ -44,7 +44,7 @@ const LoginScreen: React.FC = () => {
             <p className="text-gray-500 dark:text-gray-400">
               Enter your email below to login to your account
             </p>
-            <p className="text-red-500 dark:text-red-400 text-sm">
+            <p className="text-green-500 dark:text-red-400 text-sm">
               Please enter your valid email as you need to verify yourself with
               that email
             </p>

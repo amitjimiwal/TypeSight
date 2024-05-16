@@ -42,7 +42,7 @@ const SignupScreen: React.FC = () => {
             <p className="text-gray-500 dark:text-gray-400">
               Enter your details below to create an account with TypeSight
             </p>
-            <p className="text-red-500 dark:text-red-400 text-sm">
+            <p className="text-green-500 dark:text-red-400 text-sm">
               Please enter your valid email only as you need to verify yourself with that email
             </p>
           </div>
