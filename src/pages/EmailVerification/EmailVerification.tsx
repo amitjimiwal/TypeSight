@@ -12,7 +12,6 @@ export default function Component() {
   const { status, user } = useAuthStatus();
   useEffect(() => {
     console.log("Testing console");
-
     if (status && user?.isEmailVerified) navigate(`/dashboard/${user.id}`);
     if (!status) navigate("/login");
   }, [status, navigate, user?.isEmailVerified, user?.id]);
