@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { useAuthStatus } from "./useAuthStatus";
 import { axiosClient } from "@/api/axiosclient";
 import toast from "react-hot-toast";
@@ -9,7 +9,8 @@ const useOtp = () => {
      const navigate = useNavigate();
      const [otp, setotp] = useState<string>("");
      const { user } = useAuthStatus();
-     const submitOtp = useCallback(function (): void {
+     const submitOtp = useCallback(function (e: FormEvent): void {
+          e.preventDefault();
           if (isNaN(Number(otp))) {
                toast.error("Enter Valid Number Otp");
                return;
@@ -19,12 +20,12 @@ const useOtp = () => {
                .then(({ data }) => {
                     if (data.success) {
                          toast.success(data.message);
-                         navigate("/pricing")
+                         navigate(`/dashboard/${data.data.id}`);
                     } else toast.error(data.message);
                     setotp("");
                }).catch((err): void => {
                     if (import.meta.env.VITE_APP_ENV === 'development') console.log(err)
-                    toast.error(err.message);
+                    toast.error(err.response.data.message);
                });
      }, [otp, user?.email, navigate]);
      const resendOtp = useCallback(function (): void {

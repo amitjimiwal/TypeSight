@@ -40,7 +40,7 @@ export default function Component() {
             onChange={(e) => setotp(e.target.value)}
           />
         </div>
-        <Button className="w-full">Verify</Button>
+        <Button type="submit" className="w-full">Verify</Button>
       </form>
       <Button className="w-full" variant="outline" onClick={resendOtp}>
         Resend code
