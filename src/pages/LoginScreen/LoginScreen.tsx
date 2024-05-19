@@ -25,6 +25,7 @@ const LoginScreen: React.FC = () => {
       .then(unwrapResult)
       .then(({ data }) => {
         if(data.statusCode==403 || !data.data.isEmailVerified ) navigate("/verify");
+        else navigate(`/dashboard/${data.data.id}`);
       })
   };
   return (
