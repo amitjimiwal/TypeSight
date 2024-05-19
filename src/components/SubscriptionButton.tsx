@@ -15,7 +15,6 @@ const SubscribeButton = () => {
     if (status) {
       handleCheckout()
         .then((redirect_url) => {
-          console.log(redirect_url);
           setSessionUrl(redirect_url);
         })
         .catch(() => {

@@ -26,9 +26,6 @@ const LoginScreen: React.FC = () => {
       .then(({ data }) => {
         if(data.statusCode==403 || !data.data.isEmailVerified ) navigate("/verify");
       })
-      .catch((err) => {
-        if (err.statusCode === 401) navigate("/verify");
-      });
   };
   return (
     <div className="flex flex-col min-h-screen items-stretch">

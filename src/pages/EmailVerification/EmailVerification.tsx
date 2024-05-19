@@ -11,7 +11,6 @@ export default function Component() {
   const { otp, setotp, resendOtp, submitOtp } = useOtp();
   const { status, user } = useAuthStatus();
   useEffect(() => {
-    console.log("Testing console");
     if (status && user?.isEmailVerified) navigate(`/dashboard/${user.id}`);
     if (!status) navigate("/login");
   }, [status, navigate, user?.isEmailVerified, user?.id]);
