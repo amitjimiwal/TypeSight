@@ -15,7 +15,7 @@ const HomeScreen = () => {
       <section className="flex flex-col lg:flex-row items-center justify-around  w-full min-h-[90vh]">
         <div className="max-w-xl mb-8 lg:mb-0">
           <h1 className="text-5xl font-bold mb-6">
-            TypeSight: The typing test with eye detection
+            TypeSight: The typing test with eye tracking
           </h1>
           <p className="text-gray-700 mb-6 dark:text-gray-200">
             Welcome to TypeSight, the premier destination for typing speed and
