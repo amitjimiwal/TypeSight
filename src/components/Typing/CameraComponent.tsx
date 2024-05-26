@@ -35,26 +35,7 @@ const CameraComponent = ({ isGameStarted ,countFaults}: { isGameStarted: boolean
       }
     }, "image/jpeg");
   },[socket,isGameStarted]);
-  // function sendFrame() {
-  //   //used canvas to send blob object
-  //   if (!videoRef.current) return;
-  //   const canvas = document.createElement("canvas");
-  //   canvas.width = videoRef?.current?.videoWidth || 0;
-  //   canvas.height = videoRef?.current?.videoWidth || 0;
-  //   const context = canvas.getContext("2d");
-  //   context?.drawImage(
-  //     videoRef.current,
-  //     0,
-  //     0,
-  //     canvas.width,
-  //     canvas.height
-  //   );
-  //   canvas.toBlob(function (blob) {
-  //     if (blob && isGameStarted && socket?.readyState===1) {
-  //       socket.send(blob);
-  //     }
-  //   }, "image/jpeg");
-  // }
+
   useEffect(() => {
     //used to connect to the websocket server once the component is mounted
       const websocket = new WebSocket(import.meta.env.VITE_WS_URL as string);
@@ -67,7 +48,6 @@ const CameraComponent = ({ isGameStarted ,countFaults}: { isGameStarted: boolean
       }; 
   }, []);
   useEffect(() => {
-    console.log("isGameStarted", isGameStarted);
     try {
       if (isGameStarted && socket) {
         
@@ -98,6 +78,10 @@ const CameraComponent = ({ isGameStarted ,countFaults}: { isGameStarted: boolean
     }
     return () => {
       if (socket) socket.close();
+      //stop the webcam after the component unmounts
+      getCamera().then(stream =>{
+        stream.getTracks()[0].stop();
+      })
     };
   }, [isGameStarted]);
   return (

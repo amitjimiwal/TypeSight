@@ -49,9 +49,7 @@ const router = createBrowserRouter([
       {
         path: "/verify",
         element: (
-          <Protected authentication={true}>
             <EmailVerification />
-          </Protected>
         ),
       },
     ],

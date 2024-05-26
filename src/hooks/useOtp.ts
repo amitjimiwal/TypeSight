@@ -1,14 +1,15 @@
 import { FormEvent, useCallback, useState } from "react";
-import { useAuthStatus } from "./useAuthStatus";
 import { axiosClient } from "@/api/axiosclient";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
-
-const useOtp = () => {
+type Otp={
+     verifyToken:string;
+     userEmail:string;
+}
+const useOtp = ({verifyToken,userEmail}:Otp) => {
+     axiosClient.defaults.headers.common['Authorization'] = `Bearer ${verifyToken}`
      const navigate = useNavigate();
      const [otp, setotp] = useState<string>("");
-     const { user } = useAuthStatus();
      const submitOtp = useCallback(function (e: FormEvent): void {
           e.preventDefault();
           if (isNaN(Number(otp))) {
@@ -16,7 +17,7 @@ const useOtp = () => {
                return;
           }
           axiosClient
-               .patch(`/auth/verify/${Number(otp)}/${user?.email}`)
+               .patch(`/auth/verify/${Number(otp)}/${userEmail}`)
                .then(({ data }) => {
                     if (data.success) {
                          toast.success(data.message);
@@ -27,10 +28,10 @@ const useOtp = () => {
                     if (import.meta.env.VITE_APP_ENV === 'development') console.log(err)
                     toast.error(err.response.data.message);
                });
-     }, [otp, user?.email, navigate]);
+     }, [otp, userEmail, verifyToken]);
      const resendOtp = useCallback(function (): void {
           axiosClient
-               .patch(`/auth/resendotp/${user?.email}`)
+               .patch(`/auth/resendotp/${userEmail}`)
                .then(({ data }) => {
                     if (data.success) {
                          toast.success(data.message);
@@ -40,7 +41,7 @@ const useOtp = () => {
                     if (import.meta.env.VITE_APP_ENV === 'development') console.log(err)
                     toast.error(err.message);
                });
-     }, [user?.email])
+     }, [userEmail])
      return { otp, setotp, submitOtp, resendOtp }
 }
 

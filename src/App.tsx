@@ -9,14 +9,16 @@ import { getUserInfo } from "./redux-store/slices/authSlice";
 import { AppDispatch } from "./redux-store/store";
 import { motion, useScroll } from "framer-motion";
 import { getSubscriptionInfo } from "./redux-store/slices/subscriptionslice";
+import { useAuthStatus } from "./hooks/useAuthStatus";
 function App() {
   const { scrollYProgress } = useScroll();
   const dispatch: AppDispatch = useDispatch();
-
+  const {status} = useAuthStatus();
   useEffect(() => {
+    if(status) return;
     dispatch(getUserInfo());
     dispatch(getSubscriptionInfo());
-  }, [dispatch]);
+  }, [dispatch,status]);
   return (
     <div className="min-h-screen w-full ">
       <motion.div

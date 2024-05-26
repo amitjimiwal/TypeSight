@@ -6,7 +6,7 @@ interface Props {
   authentication: boolean;
 }
 const Protected = ({ children, authentication }: Props) => {
-  const { status, user } = useAuthStatus();
+  const { status } = useAuthStatus();
   const navigate = useNavigate();
   const [loading, setloading] = useState<boolean>(true);
   useEffect(() => {
@@ -16,11 +16,8 @@ const Protected = ({ children, authentication }: Props) => {
     if (!authentication && status === true) {
       navigate(-1);
     }
-    if (status && authentication) {
-      if (!user?.isEmailVerified) navigate("/verify");
-    }
     setloading(false);
-  }, [status, authentication, navigate,user?.isEmailVerified]);
+  }, [status, authentication, navigate]);
   return loading ? null : <>{children}</>;
 };
 
