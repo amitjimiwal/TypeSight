@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import logo from "/logo.png";
 import {
@@ -19,6 +19,7 @@ import { ModeToggle } from "@/components/ui/toggle-theme";
 import { useSubscription } from "@/hooks/useSubscription";
 import History from "@/components/History";
 import SubscriptionButton from "@/components/SubscriptionButton";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 export default function Component() {
   const dispatch = useAppDispatch();
@@ -66,7 +67,7 @@ export default function Component() {
                 size="icon"
                 variant="ghost"
                 onClick={() => {
-                  dispatch(logoutUser());
+                  dispatch(logoutUser()).then(unwrapResult).then(()=> <Navigate to="/"/>);
                 }}
               >
                 <LogOutIcon className="w-4 h-4" />
@@ -161,12 +162,6 @@ export default function Component() {
           </main>
         </div>
       </div>
-      {/* <Button
-        className="fixed bottom-7 left-10 object-cover w-fit shadow-2xl bg-gradient-to-r from-purple-400 to-fuchsia-600"
-        variant={"destructive"}
-      >
-        {isProUser ? "Manage Subscriptions" : "Go Pro"}
-      </Button> */}
       <div className="fixed bottom-7 left-10">
         <SubscriptionButton />
       </div>
@@ -194,23 +189,3 @@ function LogOutIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
-// function UserIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-//   return (
-//     <svg
-//       {...props}
-//       xmlns="http://www.w3.org/2000/svg"
-//       width="24"
-//       height="24"
-//       viewBox="0 0 24 24"
-//       fill="none"
-//       stroke="currentColor"
-//       strokeWidth="2"
-//       strokeLinecap="round"
-//       strokeLinejoin="round"
-//     >
-//       <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-//       <circle cx="12" cy="7" r="4" />
-//     </svg>
-//   );
-// }
