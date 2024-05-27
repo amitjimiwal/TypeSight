@@ -112,6 +112,7 @@ const authSlice = createSlice({
           builder.addCase(logoutUser.fulfilled, (state, action) => {
                state.user = undefined;
                const response = action.payload.data;
+               state.status=false;
                toast.success(response.message);
           })
           builder.addCase(logoutUser.rejected, (_state, action) => {
