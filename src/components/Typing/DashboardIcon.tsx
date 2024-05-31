@@ -18,7 +18,7 @@ const DashboardIcon = () => {
                  navigate(`/dashboard/${user?.id}`);
           }
       }}
-      className="cursor-pointer bg-white text-lg"
+      className="cursor-pointer bg-white"
     >
       <path fill="none" d="M0 0h48v48H0z"></path>
       <path d="M6 26h16V6H6v20zm0 16h16V30H6v12zm20 0h16V22H26v20zm0-36v12h16V6H26z"></path>

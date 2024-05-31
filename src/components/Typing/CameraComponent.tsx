@@ -53,7 +53,7 @@ const CameraComponent = ({ isGameStarted ,countFaults}: { isGameStarted: boolean
         
         socket.onmessage = () => {
           toast.error("Looking at Keyboard ! Points will be reduced", {
-            position: "top-center",
+            position: "bottom-left",
           });
           countFaults();
           setIsCheating(true);

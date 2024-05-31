@@ -6,12 +6,13 @@ import SignupScreen from "./pages/SignupScreen/SignupScreen";
 import LoginScreen from "./pages/LoginScreen/LoginScreen";
 import EmailVerification from "./pages/EmailVerification/EmailVerification";
 import Protected from "./components/Protected";
-const TypingTest = lazy(() => import("./pages/Typingtest/TypingTest"));
+const TypingPage = lazy(() => import("./pages/Typingtest/TypingPage"));
 const DashBoard = lazy(() => import("./pages/Dashboard/DashBoard"));
 import GettingStarted from "./pages/GettingStarted/GettingStarted";
 import Pricing from "./components/Pricing";
 import NotFound from "./pages/404/NotFound";
 import PageLoading from "./components/PageLoading";
+import { TestModeContextProvider } from "./context/TypingContext";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,9 +49,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/verify",
-        element: (
-            <EmailVerification />
-        ),
+        element: <EmailVerification />,
       },
     ],
   },
@@ -59,7 +58,9 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<PageLoading />}>
         <Protected authentication={true}>
-          <TypingTest />
+          <TestModeContextProvider>
+            <TypingPage />
+          </TestModeContextProvider>
         </Protected>
       </Suspense>
     ),
@@ -68,10 +69,10 @@ const router = createBrowserRouter([
     path: "/dashboard/:id",
     element: (
       <Suspense fallback={<PageLoading />}>
-      <Protected authentication={true}>
-        <DashBoard />
-      </Protected>
-    </Suspense>
+        <Protected authentication={true}>
+          <DashBoard />
+        </Protected>
+      </Suspense>
     ),
   },
   {
