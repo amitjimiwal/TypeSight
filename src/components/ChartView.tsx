@@ -51,7 +51,7 @@ export default function App({ type }: { type: string }) {
         backgroundColor:
           type === "Wpm" ? "rgb(54, 162, 235)" : "rgb(255, 159, 64)",
         borderWidth: 1,
-      },
+      }
     ],
   };
   const options = {

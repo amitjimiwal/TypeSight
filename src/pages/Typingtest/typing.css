@@ -1,0 +1,56 @@
+.current {
+  border-left: 3px solid;
+  animation: blinkingLeft 2s infinite;
+  animation-timing-function: ease;
+  transition:all 2s ease;
+}
+
+@keyframes blinkingLeft {
+  0% {
+    border-left-color: white;
+  }
+  25% {
+    border-left-color: rgb(224, 224, 23);
+  }
+  50% {
+    border-left-color: rgb(225, 225, 21);
+  }
+  75% {
+    border-left-color: rgb(225, 225, 22);
+  }
+  100% {
+    border-left-color: white;
+  }
+}
+.correct {
+  color: white;
+}
+.incorrect {
+  color: rgb(234, 76, 76);
+}
+.right-current {
+  border-right: 3px solid;
+  animation: blinkingRight 1s infinite;
+  animation-timing-function: ease;
+  transition:all 2s ease;
+}
+@keyframes blinkingRight {
+  0% {
+    border-right-color: white;
+  }
+  25% {
+    border-right-color: white;
+  }
+  50% {
+    border-right-color: white;
+  }
+  75% {
+    border-right-color: white;
+  }
+  100% {
+    border-right-color: red;
+  }
+}
+.skipped {
+  color: grey;
+}
