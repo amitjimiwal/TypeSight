@@ -8,7 +8,7 @@ import React, {
 import "./typing.css";
 import useTestMode from "@/hooks/useTextContext";
 import shuffleWords from "@/lib/helpers/shufflewords";
-import { KeyboardEventCustom, word } from "@/types/typinggame";
+import { KeyboardEventCustom } from "@/types/typinggame";
 import Menu from "@/components/Typing/Menu";
 import TypingResult from "@/components/Typing/TypingResult";
 import ContentWrapper from "@/components/ContentWrapper";
@@ -16,8 +16,14 @@ import { clsx } from "clsx";
 import CameraComponent from "@/components/Typing/CameraComponent";
 const TypingPage = () => {
   const countLookedOnKeyboard = useRef<number>(0);
-  const words = useRef<word[]>(shuffleWords("words"));
-  const { testSeconds, testWords, testMode } = useTestMode();
+  const { testSeconds, testWords } = useTestMode();
+  const [words, setWords] = useState<string[]>(() => {
+    const arr = shuffleWords("words").slice(0, testWords);
+    return arr;
+  });
+  useEffect(() => {
+    setWords(shuffleWords("words").slice(0, testWords));
+  }, [testWords]);
   const [initialRender, setInitialRender] = useState(false);
   const [currCharIndex, setCurrCharIndex] = useState(0);
   const [currWordIndex, setCurrWordIndex] = useState(0);
@@ -39,7 +45,7 @@ const TypingPage = () => {
   const [, setOpen] = useState(false);
 
   const emptySpans = () => {
-    return Array(words.current.length)
+    return Array(words.length)
       .fill(0)
       .map(() => createRef<HTMLSpanElement>());
   };
@@ -70,30 +76,6 @@ const TypingPage = () => {
     resetWordSpanRefClassname();
     focusInput();
   };
-
-  // const redoTest = () => {
-  //   setCurrCharIndex(0);
-  //   setCurrWordIndex(0);
-  //   setTestStart(false);
-  //   setTestEnd(false);
-  //   clearInterval(intervalId);
-  //   if (testMode === "word") {
-  //     setCountDown(180);
-  //     setTestTime(180);
-  //   } else {
-  //     setCountDown(testSeconds);
-  //     setTestTime(testSeconds);
-  //   }
-  //   setGraphData([]);
-  //   setCorrectChars(0);
-  //   setCorrectWords(0);
-  //   setExtraChars(0);
-  //   setIncorrectChar(0);
-  //   setMissedChars(0);
-  //   resetWordSpanRefClassname();
-  //   focusInput();
-  // };
-
   const startTimer = () => {
     const intervalId = setInterval(timer, 1000);
     setIntervalId(intervalId);
@@ -147,10 +129,10 @@ const TypingPage = () => {
       setTestStart(true);
     }
     if (allChildSpans) {
-      console.log("Working");
+      // console.log("Working");
       //logic for space press -> increase my currWordIndex by 1
       if (e.code === "Space") {
-        if (currWordIndex === words.current.length - 1) {
+        if (currWordIndex === words.length - 1) {
           clearInterval(intervalId);
           setCurrWordIndex(currWordIndex + 1);
           setTestEnd(true);
@@ -188,7 +170,8 @@ const TypingPage = () => {
           wordSpanRef[currWordIndex].current?.scrollIntoView();
         }
         if (wordSpanRef[currWordIndex + 1].current) {
-          if (wordSpanRef[currWordIndex].current) wordSpanRef[currWordIndex + 1].current!.className = "char current";
+          if (wordSpanRef[currWordIndex].current)
+            wordSpanRef[currWordIndex + 1].current!.className = "char current";
         }
         setCurrWordIndex(currWordIndex + 1);
         setCurrCharIndex(0);
@@ -223,7 +206,7 @@ const TypingPage = () => {
         return;
       }
 
-      console.log("Pressed other thing");
+      // console.log("Pressed other thing");
       //handling code
       if (currCharIndex === allChildSpans?.length) {
         //add new extra characters
@@ -236,14 +219,14 @@ const TypingPage = () => {
         setCurrCharIndex(currCharIndex + 1);
         return;
       }
-      console.log(
-        "Pressed " + e.key + "curr " + allChildSpans[currCharIndex].innerHTML
-      );
+      // console.log(
+      //   "Pressed " + e.key + "curr " + allChildSpans[currCharIndex].innerHTML
+      // );
       if (e.key === allChildSpans[currCharIndex].innerHTML) {
         allChildSpans[currCharIndex].className = "char correct";
         setCorrectChars(correctChars + 1);
         if (
-          currWordIndex === words.current.length - 1 &&
+          currWordIndex === words.length - 1 &&
           currCharIndex === allChildSpans.length - 1
         ) {
           clearInterval(intervalId);
@@ -263,27 +246,6 @@ const TypingPage = () => {
     }
     setCurrCharIndex(currCharIndex + 1);
   };
-
-  // const handleDialogBoxEvents = (e) => {
-  //   if (e.keyCode === 32) {
-  //     //logic for redo game
-  //     e.preventDefault();
-  //     redoTest();
-  //     setOpen(false);
-  //     return;
-  //   }
-  //   if (e.keyCode === 9 || e.keyCode === 13) {
-  //     //logic for reset game
-  //     e.preventDefault();
-  //     resetTest();
-  //     setOpen(false);
-  //     return;
-  //   }
-
-  //   e.preventDefault();
-  //   setOpen(false);
-  //   startTimer();
-  // };
 
   const resetWordSpanRefClassname = () => {
     wordSpanRef.map((i) => {
@@ -316,10 +278,9 @@ const TypingPage = () => {
 
   useEffect(() => {
     focusInput();
-    if (wordSpanRef[0].current)
+    if (wordSpanRef[0]?.current)
       wordSpanRef[0].current.children[0].className = "char current";
   }, []);
-
   useLayoutEffect(() => {
     if (initialRender) {
       console.log("running");
@@ -327,7 +288,7 @@ const TypingPage = () => {
     } else {
       setInitialRender(true);
     }
-  }, [testSeconds, testWords, testMode]);
+  }, [testSeconds, testWords]);
 
   return (
     <div className="typingBackgroundColor">
@@ -353,7 +314,7 @@ const TypingPage = () => {
                   "relative w-full flex flex-wrap gap-4 overflow-hidden select-none font-mono text-pretty"
                 )}
               >
-                {words.current.map((word, index) => (
+                {words.map((word, index) => (
                   <span
                     ref={wordSpanRef[index]}
                     key={index}

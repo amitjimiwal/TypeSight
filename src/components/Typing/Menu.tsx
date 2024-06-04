@@ -1,7 +1,7 @@
 import React from "react";
 import useTestMode from "@/hooks/useTextContext";
 import DashboardIcon from "./DashboardIcon";
-import { TestModes } from "@/context/TypingContext";
+// import { TestModes } from "@/context/TypingContext";
 import {
   Select,
   SelectContent,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 
 const Menu = ({ countDown }: { countDown: number }) => {
-  const { setTestSeconds, setTestMode, setTestWords } = useTestMode();
+  const { setTestSeconds, setTestWords } = useTestMode();
 
   return (
     <div>
@@ -21,6 +21,7 @@ const Menu = ({ countDown }: { countDown: number }) => {
           TypeSight
         </h1>
         <div className="flex gap-5 items-center">
+          <p className="font-bold">Time</p>
           <Select
             onValueChange={(e) => {
               setTestSeconds(Number(e));
@@ -37,8 +38,9 @@ const Menu = ({ countDown }: { countDown: number }) => {
               <SelectItem value="60">60s</SelectItem>
             </SelectContent>
           </Select>
-          <Select
+          {/* <Select
             onValueChange={(e) => {
+              console.log(e);
               setTestMode(e as TestModes);
             }}
           >
@@ -51,7 +53,8 @@ const Menu = ({ countDown }: { countDown: number }) => {
               </SelectItem>
               <SelectItem value="sentences">sentences</SelectItem>
             </SelectContent>
-          </Select>
+          </Select> */}
+          <h1 className="text-xl">Words</h1>
           <Select
             onValueChange={(e) => {
               setTestWords(Number(e));
@@ -61,9 +64,8 @@ const Menu = ({ countDown }: { countDown: number }) => {
               <SelectValue placeholder="50" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="50" defaultChecked>
-                50
-              </SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="50">50</SelectItem>
               <SelectItem value="100">100</SelectItem>
             </SelectContent>
           </Select>
