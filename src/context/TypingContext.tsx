@@ -25,7 +25,7 @@ export const TestModeContextProvider = ({
 }) => {
   const [testMode, setTestMode] = useState<TestModes>("words"); // time or word
   const [testSeconds, setTestSeconds] = useState(15);
-  const [testWords, setTestWords] = useState(10); // 10 or 20 or 30
+  const [testWords, setTestWords] = useState(50); // 50 100
 
   const values = {
     testSeconds,
