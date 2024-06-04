@@ -8,11 +8,13 @@ import EmailVerification from "./pages/EmailVerification/EmailVerification";
 import Protected from "./components/Protected";
 const TypingPage = lazy(() => import("./pages/Typingtest/TypingPage"));
 const DashBoard = lazy(() => import("./pages/Dashboard/DashBoard"));
+const ForgotPassword = lazy(() => import("./pages/resetPassword/ResetPassword"));
 import GettingStarted from "./pages/GettingStarted/GettingStarted";
 import Pricing from "./components/Pricing";
 import NotFound from "./pages/404/NotFound";
 import PageLoading from "./components/PageLoading";
 import { TestModeContextProvider } from "./context/TypingContext";
+import UpdatePassword from "./pages/resetPassword/UpdatePassword";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -51,6 +53,16 @@ const router = createBrowserRouter([
         path: "/verify",
         element: <EmailVerification />,
       },
+      {
+        path: "/forgot-password",
+        element: (
+          <Suspense fallback={<PageLoading />}>
+            <Protected authentication={false}>
+              <ForgotPassword />
+            </Protected>
+          </Suspense>
+        ),
+      },
     ],
   },
   {
@@ -78,6 +90,10 @@ const router = createBrowserRouter([
   {
     path: "/pricing",
     element: <Pricing />,
+  },
+  {
+    path:'/reset',
+    element:<UpdatePassword/>
   },
   {
     path: "*",
