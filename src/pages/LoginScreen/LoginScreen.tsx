@@ -106,6 +106,12 @@ const LoginScreen: React.FC = () => {
               Sign up
             </Link>
           </div>
+          <div className="mt-4 text-center text-sm">
+            Forgot Password?
+            <Link className="underline" to="/forgot-password">
+              Reset
+            </Link>
+          </div>
         </div>
       </main>
     </div>
