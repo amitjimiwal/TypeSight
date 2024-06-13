@@ -14,7 +14,7 @@ const Protected = ({ children, authentication }: Props) => {
       navigate("/login");
     }
     if (!authentication && status === true) {
-      navigate(-1);
+      navigate("/test");
     }
     setloading(false);
   }, [status, authentication, navigate]);
