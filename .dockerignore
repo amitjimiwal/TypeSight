@@ -1,0 +1,9 @@
+node_modules
+dist
+EyeDirection
+sight-backend
+.gitmodules
+.gitignore
+.vscode
+.husky
+.github

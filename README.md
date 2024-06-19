@@ -38,7 +38,7 @@ git submodule init
 <p>3. Update the submodules with the latest commit</p>
 
 ```
-git submodule update
+git submodule update --remote
 ```
 
 <p>4. Start backend server</p>

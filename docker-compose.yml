@@ -1,0 +1,40 @@
+version: '1'
+services:
+  frontend:
+    build: .
+    restart: always
+    container_name: sightfrontend
+    ports:
+      - "80:80"
+    env_file:
+      - path: ./.env
+        required: true
+    depends_on:
+      - backend
+      - db
+  backend:
+    build: ./sight-backend/
+    restart: always
+    container_name: sbackend
+    ports:
+      - "5555:5555"
+    env_file:
+      - path: ./sight-backend/.env
+        required: true 
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    container_name: sightdb
+    ports:
+      - "5000:5432"
+    environment:
+      POSTGRES_USER: localhost
+      POSTGRES_PASSWORD: localhost
+      POSTGRES_DB: localhost
+    volumes:
+      - typesightdb:/var/lib/postgresql/data
+volumes:
+  typesightdb:
+    driver: local
